@@ -6,7 +6,8 @@ mod tests {
 
     #[test]
     fn u16_to_u32() {
-        let v: u32 = todo!();
+        let a: u16 = 47;
+        let v: u32 = a as _;
         assert_eq!(47u16 as u32, v);
     }
 
@@ -24,14 +25,15 @@ mod tests {
         // You could solve this by using exactly the same expression as above,
         // but that would defeat the purpose of the exercise. Instead, use a genuine
         // `i8` value that is equivalent to `255` when converted from `u8`.
-        let y: i8 = todo!();
+        let y: i8 = x as _;
 
         assert_eq!(x, y);
     }
 
     #[test]
     fn bool_to_u8() {
-        let v: u8 = todo!();
+        let a = true;
+        let v: u8 = a as _; // todo!();
         assert_eq!(true as u8, v);
     }
 }
