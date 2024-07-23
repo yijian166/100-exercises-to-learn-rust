@@ -8,13 +8,20 @@
 // print both sides of the comparison to the terminal.
 // If the compared type doesn't implement `Debug`, it doesn't know how to represent them!
 
-#[derive(PartialEq)]
+#[derive(PartialEq, Debug)]
 struct Ticket {
     title: String,
     description: String,
     status: String,
 }
 
+// impl PartialEq for Ticket {
+//     fn eq(&self, other: &Self) -> bool {
+//         self.title == other.title
+//             && self.description == other.description
+//             && self.status == other.status
+//     } 
+// }
 #[cfg(test)]
 mod tests {
     use super::*;

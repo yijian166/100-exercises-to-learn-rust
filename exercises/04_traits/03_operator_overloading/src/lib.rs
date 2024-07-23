@@ -8,7 +8,27 @@ struct Ticket {
 
 // TODO: Implement the `PartialEq` trait for `Ticket`.
 
-impl PartialEq for Ticket {}
+impl PartialEq for Ticket {
+    fn eq(&self, other: &Self) -> bool {
+        // self.title == other.title
+        //     && self.description == other.description
+        //     && self.status == other.status
+        // 下面的写法更好，如果ticket 字段变化了，下面的解构写法会报错。
+        let Ticket {
+            title,
+            description,
+            status,
+        } = self;
+        let Ticket {
+            title: other_title,
+            description: other_description,
+            status: other_status,   
+        } = other;
+        title == other_title
+            && description == other_description
+            && status == other_status
+    }
+}
 
 #[cfg(test)]
 mod tests {
