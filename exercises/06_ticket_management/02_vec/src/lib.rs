@@ -15,7 +15,28 @@ pub fn fibonacci(n: u32) -> u32 {
     //
     // Hint: use a `Vec` to memoize the results you have already calculated
     // so that you don't have to recalculate them several times.
-    todo!()
+    let mut fib = vec![0, 1, 1];
+    
+    fn rec(n: u32, fib: &mut Vec<u32>) -> u32 {
+        if n < fib.len() as u32 {
+            fib[n as usize]
+        } else {
+            let res = rec(n - 1, fib) + rec(n - 2, fib);
+            fib.push(res);
+            res
+        }
+    }
+
+    rec(n, &mut fib)
+}
+
+pub fn fib(n: u32) -> u32 {
+    let n = n as usize;
+    let mut memo = vec![0 , 1];
+    for i in 2..=n {
+        memo.push(memo[i - 1] + memo[i - 2]);
+    }
+    memo[n]
 }
 
 #[cfg(test)]
