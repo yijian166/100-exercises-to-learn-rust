@@ -13,6 +13,24 @@ pub struct Ticket {
     status: Status,
 }
 
+impl Iterator for TicketStore {
+    type Item = Ticket;
+    fn next(&mut self) -> Option<Self::Item> {
+        self.tickets.pop()
+    }
+}
+
+impl TicketStore {
+    pub fn iter(&self) -> impl Iterator<Item = &Ticket> {
+        self.tickets.iter()
+    }
+
+    // 第二种写法
+    pub fn iter2(&self) -> std::slice::Iter<Ticket> {
+        self.tickets.iter()
+    }
+}
+
 #[derive(Clone, Debug, Copy, PartialEq)]
 pub enum Status {
     ToDo,
