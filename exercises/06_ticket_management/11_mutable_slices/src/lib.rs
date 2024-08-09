@@ -2,6 +2,20 @@
 //  modifying the input in place.
 //  Does it need to take a `&mut String`? Does a `&mut [str]` work? Why or why not?
 
+pub fn lowercase(s: &mut str) {
+    let lower = s.to_lowercase();
+    // 使用切片的方式重写字符串内容
+    for (i, c) in lower.chars().enumerate() {
+        if let Some(dst) = s.get_mut(i..=i) {
+            unsafe {
+                // 将字符替换为小写字符
+                std::ptr::write(dst.as_bytes_mut().as_mut_ptr() as *mut u8, c as u8);
+            }
+        }
+    }
+
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

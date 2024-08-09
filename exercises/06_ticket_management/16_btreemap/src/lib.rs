@@ -13,8 +13,15 @@ pub struct TicketStore {
     counter: u64,
 }
 
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, Eq)]
 pub struct TicketId(u64);
+
+impl Ord for TicketId {
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+        self.0.cmp(&other.0)
+    }
+    
+}
 
 #[derive(Clone, Debug, PartialEq)]
 pub struct Ticket {
@@ -40,7 +47,7 @@ pub enum Status {
 impl TicketStore {
     pub fn new() -> Self {
         Self {
-            tickets: todo!(),
+            tickets: BTreeMap::new(),
             counter: 0,
         }
     }
@@ -54,16 +61,16 @@ impl TicketStore {
             description: ticket.description,
             status: Status::ToDo,
         };
-        todo!();
+        self.tickets.insert(id, ticket);
         id
     }
 
     pub fn get(&self, id: TicketId) -> Option<&Ticket> {
-        todo!()
+        self.tickets.get(&id)
     }
 
     pub fn get_mut(&mut self, id: TicketId) -> Option<&mut Ticket> {
-        todo!()
+        self.tickets.get_mut(&id)
     }
 }
 
@@ -93,6 +100,24 @@ impl IndexMut<&TicketId> for TicketStore {
     fn index_mut(&mut self, index: &TicketId) -> &mut Self::Output {
         &mut self[*index]
     }
+}
+
+impl Iterator for TicketStore {
+    type Item = Ticket;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        self.tickets.pop_first().map(|t| t.1)
+    } 
+}
+
+impl<'a> IntoIterator for &'a TicketStore {
+    type Item = &'a Ticket;
+    type IntoIter = std::collections::btree_map::Values<'a, TicketId, Ticket>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.tickets.values()
+    }
+    
 }
 
 #[cfg(test)]
